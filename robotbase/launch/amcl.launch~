@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+<!-- amcl node -->
+<arg name="test_map" default="map.yaml" />
+
+<node pkg="map_server" type="map_server" name="map_server" args="/home/zmr/catkin_ws/src/maps/map.yaml" />
+<include file="$(find robotbase)/move_base_config/amcl_node.xml" />
+<node pkg="tf" type="static_transform_publisher" name="odom_map_broadcaster" args="0 0 0 0 0 0 /odom /map 100" />
+</launch>

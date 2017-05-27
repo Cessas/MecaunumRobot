@@ -1,0 +1,11 @@
+
+<launch>
+<!-- amcl node -->
+
+<node pkg="tf" type="static_transform_publisher" name="tf" args="0.074 0 0.118 0 0 0 base_link laser 100" />
+<node pkg="map_server" type="map_server" name="map_server" args="/home/zmr/map1.yaml" />
+<include file="$(find robotbase)/move_base_config/amcl_node.xml" />
+<include file="$(find robotbase)/move_base_config/move_base.xml" />
+<node pkg="tf" type="static_transform_publisher" name="odom_map_broadcaster" args="0 0 0 0 0 0 /odom /map 100" />
+<node pkg="rviz" type="rviz" name="rviz" />
+</launch>
