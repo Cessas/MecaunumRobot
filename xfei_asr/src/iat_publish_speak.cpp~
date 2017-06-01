@@ -191,9 +191,9 @@ int main(int argc, char* argv[])
     ros::Publisher pub = n.advertise<std_msgs::String>("xfspeech", 1000);
     ros::Rate loop_rate(10);
 
-    ros::Subscriber sbu = n.subscribe("xfwakeup", 1000, WakeUp);
+    ros::Subscriber sub = n.subscribe("xfwakeup", 1000, WakeUp);
     ros::Publisher pub1 = n.advertise<std_msgs::String>("xfwords", 1000);
-    ros::Publisher pub2 = n.advertise<std_msgs::String>("xfspeech", 1000);
+    //ros::Publisher pub2 = n.advertise<std_msgs::String>("xfspeech", 1000);
 
     int count=0;
     while(ros::ok())
@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
         if (flag){
 
 	        int ret = MSP_SUCCESS;
-    	    const char* login_params = "appid = 58249817, work_dir = .";
+    	    const char* login_params = "appid =5925183d, work_dir = .";
 
 	        const char* session_begin_params =
 		        "sub = iat, domain = iat, language = zh_cn, "

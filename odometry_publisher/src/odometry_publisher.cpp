@@ -169,7 +169,39 @@ double dx =xytCounts[0] * scale_x;
 	odom.pose.pose.position.y = y;
 	odom.pose.pose.position.z = 0.0;
 	odom.pose.pose.orientation = odom_quat;
-        odom.pose.covariance =  boost::assign::list_of(1e-3) (0) (0)  (0)  (0)  (0)
+        
+
+	// set the velocity
+	odom.child_frame_id = "base_footprint";
+	odom.twist.twist.linear.x = dx / dt;
+	odom.twist.twist.linear.y = dy / dt;
+	odom.twist.twist.angular.z = dth / dt;
+        if(odom.twist.twist.linear.x ==0&&odom.twist.twist.linear.y == 0&&odom.twist.twist.angular.z == 0){
+        odom.twist.covariance =  boost::assign::list_of(1e-9) (0)   (0)  (0)  (0)  (0)
+                                                      (0) (1e-3)  (1e-9)  (0)  (0)  (0)
+                                                      (0)   (0)  (1e6) (0)  (0)  (0)
+                                                      (0)   (0)   (0) (1e6) (0)  (0)
+                                                      (0)   (0)   (0)  (0) (1e6) (0)
+                                                      (0)   (0)   (0)  (0)  (0)  (1e-9) ; 
+odom.pose.covariance =  boost::assign::list_of(1e-9) (0) (0)  (0)  (0)  (0)
+                                                       (0) (1e-3)  (1e-9)  (0)  (0)  (0)
+                                                       (0)   (0)  (1e6) (0)  (0)  (0)
+                                                       (0)   (0)   (0) (1e6) (0)  (0)
+                                                       (0)   (0)   (0)  (0) (1e6) (0)
+                                                       (0)   (0)   (0)  (0)  (0)  (1e-9) ;
+
+
+
+
+
+}else{
+        odom.twist.covariance =  boost::assign::list_of(1e-3) (0)   (0)  (0)  (0)  (0)
+                                                      (0) (1e-3)  (0)  (0)  (0)  (0)
+                                                      (0)   (0)  (1e6) (0)  (0)  (0)
+                                                      (0)   (0)   (0) (1e6) (0)  (0)
+                                                      (0)   (0)   (0)  (0) (1e6) (0)
+                                                      (0)   (0)   (0)  (0)  (0)  (1e3) ; 
+odom.pose.covariance =  boost::assign::list_of(1e-3) (0) (0)  (0)  (0)  (0)
                                                        (0) (1e-3)  (0)  (0)  (0)  (0)
                                                        (0)   (0)  (1e6) (0)  (0)  (0)
                                                        (0)   (0)   (0) (1e6) (0)  (0)
@@ -177,18 +209,9 @@ double dx =xytCounts[0] * scale_x;
                                                        (0)   (0)   (0)  (0)  (0)  (1e3) ;
 
 
-	// set the velocity
-	odom.child_frame_id = "base_footprint";
-	odom.twist.twist.linear.x = dx / dt;
-	odom.twist.twist.linear.y = dy / dt;
-	odom.twist.twist.angular.z = dth / dt;
-        odom.twist.covariance =  boost::assign::list_of(1e-3) (0)   (0)  (0)  (0)  (0)
-                                                      (0) (1e-3)  (0)  (0)  (0)  (0)
-                                                      (0)   (0)  (1e6) (0)  (0)  (0)
-                                                      (0)   (0)   (0) (1e6) (0)  (0)
-                                                      (0)   (0)   (0)  (0) (1e6) (0)
-                                                      (0)   (0)   (0)  (0)  (0)  (1e3) ; 
 
+
+}
 	// publish the message
 	odom_pub.publish(odom);
 }

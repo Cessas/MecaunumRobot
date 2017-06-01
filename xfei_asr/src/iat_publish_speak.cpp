@@ -191,7 +191,7 @@ int main(int argc, char* argv[])
     ros::Publisher pub = n.advertise<std_msgs::String>("xfspeech", 1000);
     ros::Rate loop_rate(10);
 
-    ros::Subscriber sbu = n.subscribe("xfwakeup", 1000, WakeUp);
+    ros::Subscriber sub = n.subscribe("xfwakeup", 1000, WakeUp);
     ros::Publisher pub1 = n.advertise<std_msgs::String>("xfwords", 1000);
     ros::Publisher pub2 = n.advertise<std_msgs::String>("xfspeech", 1000);
 

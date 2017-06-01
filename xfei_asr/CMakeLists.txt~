@@ -131,7 +131,6 @@ include_directories(
 add_executable(asr_sample src/asr_sample.c)
 add_executable(iat_sample src/iat_sample.c)
 add_executable(tts_sample src/tts_sample.c)
-
 add_executable(tts_subscribe_speak src/tts_subscribe_speak.cpp)
 #add_executable(sch_speak src/sch_speak.c)
 #add_executable(sch_text src/sch_text.c)
@@ -150,25 +149,25 @@ add_executable(iat_publish_speak src/iat_publish_speak.cpp src/speech_recognizer
 target_link_libraries(
    asr_sample
    ${catkin_LIBRARIES} 
-   /home/ubu/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
+   /home/ztq/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
  )
 
 target_link_libraries(
    iat_sample
    ${catkin_LIBRARIES} 
-   /home/ubu/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
+   /home/ztq/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
  )
 
 target_link_libraries(
    tts_subscribe_speak
    ${catkin_LIBRARIES} 
-   /home/ubu/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
+   /home/ztq/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
  )
 
 target_link_libraries(
    iat_publish_speak
    ${catkin_LIBRARIES} 
-   /home/ubu/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -lpthread -lm -lrt -lasound
+   /home/ztq/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -lpthread -lm -lrt -lasound
  )
 
 #target_link_libraries(
@@ -186,14 +185,14 @@ target_link_libraries(
 target_link_libraries(
    tts_sample
    ${catkin_LIBRARIES} 
-   /home/ubu/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
+   /home/ztq/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
  )
 
-#target_link_libraries(
-#   speech_recognizer
-#   ${catkin_LIBRARIES} 
-#   /home/ubu/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
-# )
+target_link_libraries(
+   ${PROJECT_NAME}
+   ${catkin_LIBRARIES} 
+   /home/ztq/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -pthread
+ )
 
 #target_link_libraries(
 #   linuxrec
@@ -212,7 +211,7 @@ target_link_libraries(
 target_link_libraries(
    iat_record
    ${catkin_LIBRARIES} 
-   /home/ubu/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -lpthread -lm -lrt -lasound
+   /home/ztq/catkin_ws/src/xfei_asr/lib/libmsc.so -ldl -lpthread -lm -lrt -lasound
    #linuxrec
    #speech_recognizer  
  )
