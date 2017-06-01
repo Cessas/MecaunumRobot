@@ -9,6 +9,8 @@
 
 (3)Close loop is on the way........
 
-(4)Today is fucking HOT!
+(4)Update the covariance,and deleted the tf in odometry
+
+(5)Today is fucking HOT!
 
 
