@@ -5,3 +5,4 @@
 (3)Add simple voice recognizing scripts for RoboCup 
 (3)Close loop is on the way........
 (4)Today is fucking HOT!
+
