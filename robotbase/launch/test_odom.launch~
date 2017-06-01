@@ -3,11 +3,10 @@
 </node>
 <node pkg="rosserial_python" type="serial_node.py" name="ARDUINO2" args="/dev/ttyACM1" respawn="true" output="screen" />
     <node pkg="odometry_publisher" type="odometry_publisher" name="odometry_publisher" output="screen">
-        <param name="~scale_x" value="0.000200" />
-        <param name="~scale_y" value="0.000200" />
-        <param name="~scale_th" value="0.00085" />
+        <param name="~scale_x" value="0.000205" />
+        <param name="~scale_y" value="0.000205" />
+        <param name="~scale_th" value="0.00080" />
     </node>
-<node pkg="tf" type="static_transform_publisher" name="tf" args="0.074 0 0.118 0 0 0 1 /base_link /laser 100"/>
 <node pkg="rviz" type="rviz" name="rviz" />
 <include file="$(find robotbase)/launch/joystick_teleop.launch" />
  

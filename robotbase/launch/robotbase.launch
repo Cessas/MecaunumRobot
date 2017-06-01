@@ -3,11 +3,12 @@
 </node>
 <node pkg="rosserial_python" type="serial_node.py" name="ARDUINO2" args="/dev/ttyACM1" respawn="true" output="screen" />
     <node pkg="odometry_publisher" type="odometry_publisher" name="odometry_publisher" output="screen">
-      <param name="~scale_x" value="0.000200" />
-        <param name="~scale_y" value="0.000200" />
-        <param name="~scale_th" value="0.00080" />
+      <param name="~scale_x" value="0.0002" />
+        <param name="~scale_y" value="0.0002" />
+        <param name="~scale_th" value="0.0008" />
     </node>
-<node pkg="tf" type="static_transform_publisher" name="tf" args="0.074 0 0.22 0 0 0  /base_link /laser 200"/>
+<node pkg="tf" type="static_transform_publisher" name="baselink_laser_publisher" args="0 0 0 0 0 1 base_footprint base_link  100"/>
+<node pkg="tf" type="static_transform_publisher" name="baselink" args="0 0 0 0 0 1 base_footprint base_imu_link  100"/>
  
  <arg name="node_name"             value="velocity_smoother"/>
   <arg name="nodelet_manager_name"  value="nodelet_manager"/>
@@ -15,7 +16,7 @@
   <arg name="raw_cmd_vel_topic"     value="cmd_vel"/>
   <arg name="smooth_cmd_vel_topic"  value="smoother_cmd_vel"/>
   <arg name="robot_cmd_vel_topic"   value="robot_cmd_vel"/>
-  <arg name="odom_topic"            value="odom"/>
+  <arg name="odom_topic"            value="odom_combined"/>
   
   <!-- nodelet manager -->
   <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager"/>
@@ -30,5 +31,6 @@
     <arg name="robot_cmd_vel_topic"   value="$(arg robot_cmd_vel_topic)"/>
     <arg name="odom_topic"            value="$(arg odom_topic)"/>
   </include>
+
 
 </launch>

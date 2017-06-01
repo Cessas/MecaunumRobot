@@ -1,0 +1,17 @@
+<launch>
+<node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+  <param name="output_frame" value="odom"/>
+  <param name="base_footprint_frame" value="base_footprint"/>
+  <param name="freq" value="50.0"/>
+<param name="debug" value="true" />
+  <param name="sensor_timeout" value="1.0"/>  
+  <param name="odom_used" value="true"/>
+  <param name="imu_used" value="true"/>
+  <param name="vo_used" value="false"/>
+  <remap from="imu_data" to="imu" />
+</node>
+  <arg name="razor_config_file" default="$(find razor_imu_9dof)/config/my_razor.yaml"/>
+  <node pkg="razor_imu_9dof" type="imu_node.py" name="imu_node" output="screen">
+    <rosparam file="$(arg razor_config_file)" command="load"/>
+  </node>
+</launch>

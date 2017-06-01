@@ -1,4 +1,5 @@
 <launch>
+<node pkg="tf" type="static_transform_publisher" name="baselink_laser_publisher" args="0.074 0 0.12 0 0 1 base_link  laser 100"/>
 <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
  <rosparam file="$(find robotbase)/move_base_config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find robotbase)/move_base_config/costmap_common_params.yaml" command="load" ns="local_costmap" />

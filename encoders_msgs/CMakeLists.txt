@@ -6,6 +6,8 @@ add_message_files(
   DIRECTORY msg
   FILES
   Encoders.msg
+ EncoderA.msg
+ EncoderB.msg
 
 
 )

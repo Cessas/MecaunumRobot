@@ -1,11 +1,12 @@
+
+
 <launch>
 <!-- 
   Example amcl configuration. Descriptions of parameters, as well as a full list of all amcl parameters, can be found at http://www.ros.org/wiki/amcl.
 -->
-<node pkg="amcl" type="amcl" name="amcl" respawn="true">
-  <remap from="scan" to="base_scan" />
+<node pkg="amcl" type="amcl" name="amcl" respawn="true" output="screen">
   <!-- Publish scans from best pose at a max of 10 Hz -->
-  <param name="odom_model_type" value="omini"/>
+  <param name="odom_model_type" value="diff"/>
   <param name="odom_alpha5" value="0.1"/>
   <param name="transform_tolerance" value="0.2" />
   <param name="gui_publish_rate" value="10.0"/>
@@ -31,16 +32,9 @@
   <param name="laser_likelihood_max_dist" value="2.0"/>
   <param name="update_min_d" value="0.2"/>
   <param name="update_min_a" value="0.5"/>
-  <param name="odom_frame_id" value="odom"/>
+  <param name="odom_frame_id" value="odom_combined"/>
   <param name="resample_interval" value="1"/>
-  <param name="transform_tolerance" value="0.1"/>
   <param name="recovery_alpha_slow" value="0.0"/>
   <param name="recovery_alpha_fast" value="0.0"/>
-  <param name="initial_pose_x" value="12.0" />
-  <param name="initial_pose_y" value="26.0" />
-  <param name="initial_pose_a" value="0.0" />
-  <param name="initial_cov_xx" value="0.5" />
-  <param name="initial_cov_yy" value="0.5" />
-  <param name="initial_cov_aa" value="0.1" />
 </node>
 </launch>

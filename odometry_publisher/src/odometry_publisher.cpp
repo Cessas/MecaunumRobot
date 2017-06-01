@@ -1,9 +1,9 @@
-//yuguantoumx@icloud.com
-//recieve encoder msgs and convert to mecaunum wheel odometry
+
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 #include <encoders_msgs/Encoders.h>
+#include<boost/assign.hpp>
 
 #define PI 3.14159265
 #define COUNT_OVERFLOW 2147483647
@@ -15,7 +15,6 @@ int max(int a,int b){
 if(a>b) return a;
 else return b;
 }
-
 int min(int a,int b){
 if(a>b) return b;
 else return a;
@@ -35,6 +34,7 @@ class OdometryPublisher
 		ros::NodeHandle nh;
 		ros::Subscriber enc_sub;
 		ros::Publisher odom_pub;
+               // ros::Publisher odom_combined_pub;
 		tf::TransformBroadcaster odom_broadcaster;
 		
 		double x, y, th;
@@ -66,6 +66,7 @@ OdometryPublisher::OdometryPublisher()
 	// connects subs and pubs
 	enc_sub = nh.subscribe<encoders_msgs::Encoders>("Encoders", 10, &OdometryPublisher::encoderCallback, this);
 	odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 50);
+        //odom_combined_pub = nh.advertise<nav_msgs::Odometry>("odom_combined", 50);
 }
 
 
@@ -73,13 +74,12 @@ OdometryPublisher::OdometryPublisher()
 void OdometryPublisher::encoderCallback(const encoders_msgs::Encoders::ConstPtr& encoders)
 {
 	int newEncoderCounts[5];
-//if you changed the encoders pins,you must change there to ensure the accrucy;
-	newEncoderCounts[1] = encoders->encoderA; 
-	newEncoderCounts[0] = encoders->encoderB; 
-	newEncoderCounts[3] = encoders->encoderC; 
-	newEncoderCounts[2] = encoders->encoderD; 
+	newEncoderCounts[1] = encoders->encoderA; // M_fl
+	newEncoderCounts[0] = encoders->encoderB; // M_fr
+	newEncoderCounts[3] = encoders->encoderC; // M_bl
+	newEncoderCounts[2] = encoders->encoderD; // M_br
 
-	newEncoderCounts[4]=encoders->header.stamp.toSec();//save current time
+	newEncoderCounts[4]=encoders->header.stamp.toSec();//保存当前时间
 
 	
 	// find deltas
@@ -107,6 +107,14 @@ int xytCounts[3];
         xytCounts[0] = (deltaEncoderCounts[0] + deltaEncoderCounts[1] + deltaEncoderCounts[2] + deltaEncoderCounts[3]) / 4;
 	xytCounts[1] = (0 - deltaEncoderCounts[0] + deltaEncoderCounts[1] + deltaEncoderCounts[2] - deltaEncoderCounts[3]) / 4;
 	xytCounts[2] = (0 - deltaEncoderCounts[0] + deltaEncoderCounts[1] - deltaEncoderCounts[2] + deltaEncoderCounts[3]) / 4;
+
+
+
+
+
+
+
+
 	
 // unpack the encoder message in base_link frame
 	ros::Time current_time = ros::Time::now();
@@ -137,36 +145,49 @@ double dx =xytCounts[0] * scale_x;
 	geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
 
 	// first, we'll publish the transform over tf
-	geometry_msgs::TransformStamped odom_trans;
-	odom_trans.header.stamp = current_time;
-	odom_trans.header.frame_id = "odom";
-	odom_trans.child_frame_id = "base_link";
+	//geometry_msgs::TransformStamped odom_trans;
+	//odom_trans.header.stamp = current_time;
+	//odom_trans.header.frame_id = "odom_combined";
+	//odom_trans.child_frame_id = "base_footprint";
 
-	odom_trans.transform.translation.x = x;
-	odom_trans.transform.translation.y = y;
-	if(calibration_mode) odom_trans.transform.translation.z = th; // need some way to check this w/o the quaternion
-	else odom_trans.transform.translation.z = 0.0;
-	odom_trans.transform.rotation = odom_quat;
+	//odom_trans.transform.translation.x = x;
+	//odom_trans.transform.translation.y = y;
+	//if(calibration_mode) odom_trans.transform.translation.z = th; // need some way to check this w/o the quaternion
+	//else odom_trans.transform.translation.z = 0.0;
+	//odom_trans.transform.rotation = odom_quat;
 
 	// send the transform
-	odom_broadcaster.sendTransform(odom_trans);
+	//odom_broadcaster.sendTransform(odom_trans);
 
 	// next, we'll publish the odometry message over ROS
 	nav_msgs::Odometry odom;
 	odom.header.stamp = current_time;
-	odom.header.frame_id = "odom";
+	odom.header.frame_id = "odom_combined";
 
 	// set the position
 	odom.pose.pose.position.x = x;
 	odom.pose.pose.position.y = y;
 	odom.pose.pose.position.z = 0.0;
 	odom.pose.pose.orientation = odom_quat;
+        odom.pose.covariance =  boost::assign::list_of(1e-3) (0) (0)  (0)  (0)  (0)
+                                                       (0) (1e-3)  (0)  (0)  (0)  (0)
+                                                       (0)   (0)  (1e6) (0)  (0)  (0)
+                                                       (0)   (0)   (0) (1e6) (0)  (0)
+                                                       (0)   (0)   (0)  (0) (1e6) (0)
+                                                       (0)   (0)   (0)  (0)  (0)  (1e3) ;
+
 
 	// set the velocity
-	odom.child_frame_id = "base_link";
+	odom.child_frame_id = "base_footprint";
 	odom.twist.twist.linear.x = dx / dt;
 	odom.twist.twist.linear.y = dy / dt;
 	odom.twist.twist.angular.z = dth / dt;
+        odom.twist.covariance =  boost::assign::list_of(1e-3) (0)   (0)  (0)  (0)  (0)
+                                                      (0) (1e-3)  (0)  (0)  (0)  (0)
+                                                      (0)   (0)  (1e6) (0)  (0)  (0)
+                                                      (0)   (0)   (0) (1e6) (0)  (0)
+                                                      (0)   (0)   (0)  (0) (1e6) (0)
+                                                      (0)   (0)   (0)  (0)  (0)  (1e3) ; 
 
 	// publish the message
 	odom_pub.publish(odom);
