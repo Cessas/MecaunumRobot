@@ -11,6 +11,5 @@
 
 (4)Update the covariance,and deleted the tf in odometry
 
-(5)Today is fucking HOT!
 
 
