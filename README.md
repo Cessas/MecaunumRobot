@@ -11,10 +11,11 @@
 (4)Update the covariance,and deleted the tf in odometry
 
 Main Function Achieved：
-·underlying driver for 4wd mecaunum robot
-·SLAM
-·voice recognition
-·robot navigation
+underlying driver for 4wd mecaunum robot
+SLAM
+voice recognition
+robot navigation
+
 
 
 
