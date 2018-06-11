@@ -10,6 +10,6 @@
 <br>	5.# roslaunch bringup bringup_without_map_and_navigation.launch to launch navigation and gmapping simultaneously 
 <br>	6.to use voice command,roslaunch bringup voice_command.launch .you SHOULD add your rules in convert.py.now ONLY support 4 scenes. 
 ## 
-<br>EMAIL:yuguantoumx@icloud.com
+<br>yuguantoumx@icloud.com
 <br>Powered By AHJZU ROBOT INNOVATION LAB
-<br> 安徽建筑大学 机器人创新实验室
+<br> @安徽建筑大学 机器人创新实验室
