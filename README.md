@@ -1,7 +1,7 @@
 # MecaunumRobot
 <br>we simplify the underlying system,reduce one sheild to hold on the whole functions.
 <br> Added power module 
-# How 2 use
+# How to use
 <br> see http://wiki.ros.org/kinetic/Installation/Ubuntu to install ROS 
 <br>	1.git clone this rep,kinetic branch into $YOUR_CATKIN_WS/SRC 
 <br>	2.catkin_make 
